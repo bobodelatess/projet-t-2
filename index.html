@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Super Plombier Bros</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div id="game-container">
+    <canvas id="game" width="800" height="480"></canvas>
+
+    <!-- HUD -->
+    <div id="hud">
+      <div class="hud-item"><span class="hud-label">SCORE</span><span id="hud-score">000000</span></div>
+      <div class="hud-item"><span class="hud-label">PIÈCES</span><span id="hud-coins">×00</span></div>
+      <div class="hud-item"><span class="hud-label">MONDE</span><span id="hud-world">1-1</span></div>
+      <div class="hud-item"><span class="hud-label">VIES</span><span id="hud-lives">×3</span></div>
+    </div>
+
+    <!-- Écran de démarrage -->
+    <div id="start-screen" class="overlay">
+      <h1>SUPER<br />PLOMBIER<br />BROS</h1>
+      <p class="blink">Appuie sur ESPACE ou ENTRÉE pour jouer</p>
+      <div class="controls">
+        <p>← → ou A / D : se déplacer</p>
+        <p>ESPACE / ↑ / W : sauter (maintenir = saut plus haut)</p>
+        <p>MAJ : courir</p>
+      </div>
+    </div>
+
+    <!-- Écran de fin -->
+    <div id="end-screen" class="overlay hidden">
+      <h1 id="end-title">GAME OVER</h1>
+      <p id="end-message"></p>
+      <p class="blink">Appuie sur ESPACE ou ENTRÉE pour rejouer</p>
+    </div>
+  </div>
+
+  <script src="js/input.js"></script>
+  <script src="js/sprites.js"></script>
+  <script src="js/level.js"></script>
+  <script src="js/entities.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+# Dépendances (le projet n'en a pas, mais au cas où)
+node_modules/
+
+# Cruft OS / éditeurs
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/

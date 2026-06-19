@@ -1,0 +1,11 @@
+{
+  "name": "super-plombier-bros",
+  "version": "1.0.0",
+  "description": "Jeu de plateforme façon Super Mario Bros en HTML5 Canvas + JavaScript, sans dépendance.",
+  "scripts": {
+    "start": "python3 -m http.server 8000",
+    "test": "node test/sim.js"
+  },
+  "keywords": ["game", "platformer", "mario", "canvas", "javascript"],
+  "license": "MIT"
+}
