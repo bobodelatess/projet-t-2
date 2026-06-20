@@ -397,6 +397,12 @@ const Game = (function () {
   function init() {
     buildWorld();        // crée les entités pour que le rendu fonctionne dès l'écran d'accueil
     updateHUD();
+    // Démarrer / rejouer aussi à la souris ou au toucher : robuste si le clavier
+    // n'a pas le focus (page en iframe, etc.) et permet de jouer au tactile.
+    const pointerStart = () => {
+      if (state === 'start' || state === 'win' || state === 'lose') startGame();
+    };
+    window.addEventListener('pointerdown', pointerStart);
     requestAnimationFrame(frame);
   }
 

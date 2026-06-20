@@ -51,7 +51,9 @@ const sandbox = {
   requestAnimationFrame: (cb) => { sandbox.__raf = cb; return 1; },
   __now: 0,
   __capture: (Input, Level) => { sandbox.__Input = Input; sandbox.__Level = Level; },
-  addEventListener: () => {},        // les vrais events clavier sont remplacés par l'IA
+  __listeners: {},
+  // Enregistre réellement les écouteurs pour pouvoir tester le vrai gestionnaire clavier
+  addEventListener: (type, fn) => { (sandbox.__listeners[type] ||= []).push(fn); },
 };
 sandbox.window = sandbox;          // window.Game = Game ; window.AudioContext = undefined
 vm.createContext(sandbox);
@@ -67,6 +69,11 @@ const { Game, __Input: Input, __Level: Level } = sandbox;
 const T = Level.TILE, GT = Level.GROUND_TOP;
 
 function setInput(o) { Object.assign(Input.state, o); }
+
+// Envoie un vrai événement clavier dans les écouteurs enregistrés par input.js
+function key(type, code) {
+  (sandbox.__listeners[type] || []).forEach((fn) => fn({ code, repeat: false, preventDefault() {} }));
+}
 
 /* ---- Une frame de simulation ---- */
 let now = 0;
@@ -154,13 +161,15 @@ function run() {
     console.error('❌ Le jeu ne reste pas sur l\'écran d\'accueil avant l\'appui sur Entrée/Espace.');
     process.exit(1);
   }
-  setInput({ start: true });             // un appui réel dure plusieurs frames
+  // Appui réel sur "Entrée" via le vrai gestionnaire clavier de input.js
+  key('keydown', 'Enter');
   for (let i = 0; i < 4; i++) step();
-  setInput({ start: false });
+  key('keyup', 'Enter');
   if (Game._debug().state !== 'playing') {
     console.error('❌ Appuyer sur Entrée/Espace ne démarre pas la partie.');
     process.exit(1);
   }
+  console.log('  ✔ écran d\'accueil -> Entrée -> partie démarrée');
 
   const MAX = 15000;
   let maxPx = 0, deaths = 0, prevState = 'playing', lastLives = Game._debug().lives;
