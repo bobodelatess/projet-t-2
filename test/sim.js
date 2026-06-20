@@ -74,6 +74,10 @@ function setInput(o) { Object.assign(Input.state, o); }
 function key(type, code) {
   (sandbox.__listeners[type] || []).forEach((fn) => fn({ code, repeat: false, preventDefault() {} }));
 }
+// Envoie un vrai événement pointeur (clic / tap) dans les écouteurs enregistrés par game.js
+function pointer() {
+  (sandbox.__listeners.pointerdown || []).forEach((fn) => fn({ preventDefault() {} }));
+}
 
 /* ---- Une frame de simulation ---- */
 let now = 0;
@@ -205,6 +209,11 @@ function run() {
       prevState = d.state;
     }
     if (d.state === 'win' || d.state === 'lose') {
+      if (d.state === 'win') {                  // vérifie le démarrage au clic/tap
+        pointer(); step();
+        if (Game._debug().state === 'playing') console.log('  ✔ clic/tap (pointerdown) relance la partie');
+        else { console.error('❌ le clic/tap ne relance pas la partie'); process.exit(1); }
+      }
       report(d, maxPx, deaths, i);
       return;
     }
