@@ -147,10 +147,20 @@ function decide() {
 
 /* ---- Boucle de test ---- */
 function run() {
-  // Démarre la partie
-  setInput({ start: true });
-  step();
+  // Laisse tourner quelques frames sur l'écran d'accueil (le décor doit se
+  // rendre derrière l'overlay sans planter), PUIS appuie sur "start".
+  for (let i = 0; i < 8; i++) step();
+  if (Game._debug().state !== 'start') {
+    console.error('❌ Le jeu ne reste pas sur l\'écran d\'accueil avant l\'appui sur Entrée/Espace.');
+    process.exit(1);
+  }
+  setInput({ start: true });             // un appui réel dure plusieurs frames
+  for (let i = 0; i < 4; i++) step();
   setInput({ start: false });
+  if (Game._debug().state !== 'playing') {
+    console.error('❌ Appuyer sur Entrée/Espace ne démarre pas la partie.');
+    process.exit(1);
+  }
 
   const MAX = 15000;
   let maxPx = 0, deaths = 0, prevState = 'playing', lastLives = Game._debug().lives;

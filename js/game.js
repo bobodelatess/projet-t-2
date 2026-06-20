@@ -395,6 +395,7 @@ const Game = (function () {
   }
 
   function init() {
+    buildWorld();        // crée les entités pour que le rendu fonctionne dès l'écran d'accueil
     updateHUD();
     requestAnimationFrame(frame);
   }
